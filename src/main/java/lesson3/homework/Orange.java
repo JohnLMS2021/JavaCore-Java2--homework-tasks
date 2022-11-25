@@ -1,2 +1,8 @@
-package lesson3.homework;public class Orange {
+package lesson3.homework;
+
+public class Orange extends Fruit {
+
+    public Orange() {
+        super(1.5f);
+    }
 }
