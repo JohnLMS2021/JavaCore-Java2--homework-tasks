@@ -1,73 +1,78 @@
 package lesson3.homework;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
+        taskThree();
 
-        // Задача 1. Написать метод, который меняет два элемента массива местами.
-        // (массив может быть любого ссылочного типа);
-        String[] arr = {"asd", "ds", "ret", "123"};
-        //Integer[] arr = {3, 4, 6, 234, -1324, 111};
-
-        System.out.println("Task 1\n" + Arrays.toString(arr));
-        swapElements(arr, 2, 3);
-        System.out.println(Arrays.toString(arr));
-
-
-        //Задача 2. Написать метод, который преобразует массив в ArrayList
-        List<String> list = convertToList(arr);
-        System.out.println("Task 2\n" + list.getClass() + " : " + list);
-
-
-        //Задача 3. Коробки с фруктами
-        System.out.println("Task 3");
-        Orange orange = new Orange();
-        Apple apple = new Apple();
-        Box<Orange> orangeBox1 = new Box();
-        Box<Orange> orangeBox2 = new Box();
-        Box<Apple> appleBox = new Box();
-            orangeBox1.add(new Orange());
-            orangeBox1.add(new Orange());
-            orangeBox1.add(new Orange());
-
-            for (int i = 0; i < 4; i++) {
-                orangeBox2.add(new Orange());
-            }
-            for (int i = 0; i < 6; i++) {
-                appleBox.add(new Apple());
-            }
-
-
-        orangeBox1.info();
-        orangeBox2.info();
-        appleBox.info();
-
-        Float orange1Weigth = orangeBox1.getWeight();
-        Float orange2Weigth = orangeBox2.getWeight();
-        Float appleWeigth = appleBox.getWeight();
-        System.out.println("Вес коробки 1 с апельсинами: " + orange1Weigth);
-        System.out.println("Вес коробки 2 с апельсинами: " + orange2Weigth);
-        System.out.println("Вес коробки с яблоками: " + appleWeigth);
-
-        System.out.println("Сравнить вес orangeBox1 и appleBox: " + orangeBox1.compare(appleBox));
-        System.out.println("Сравнить вес orangeBox2 и appleBox: " + orangeBox2.compare(appleBox));
-
-            orangeBox1.moveAt(orangeBox2);
-
-        orangeBox1.info();
-        orangeBox2.info();
-        appleBox.info();
     }
 
-    private static <T> void swapElements(T[] array, int index1, int index2) {
-        T temp = array[index1];
-        array[index1] = array[index2];
-        array[index2] = temp;
+    public static void taskOne() {
+
+        Integer[] iArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        Double[] dArray = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 0.0};
+        String[] sArray = {" one ", " two ", " three ", " four ", " five ", " six ", " seven "};
+        try {
+            swapTwoElementsInArray(iArray, 0, 2);
+            swapTwoElementsInArray(dArray, 0, 2);
+            swapTwoElementsInArray(sArray, 0, 2);
+        } catch (WrongPositionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Swap result in integer array: " + Arrays.toString(iArray));
+        System.out.println("Swap result in double array: " + Arrays.toString(dArray));
+        System.out.println("Swap result in string array: " + Arrays.toString(sArray));
     }
 
-    private static <E> List<E> convertToList(E[] array) {
-        return Arrays.asList(array);
+    public static void taskTwo() {
+        Integer[] iArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        Double[] dArray = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 0.0};
+        String[] sArray = {"one", "two", "three", "four", "five"};
+        arrayToArrayList(iArray);
+        arrayToArrayList(dArray);
+        arrayToArrayList(sArray);
+        System.out.println(Arrays.toString(iArray));
+        System.out.println(Arrays.toString(dArray));
+        System.out.println(Arrays.toString(sArray));
+    }
+
+    public static void taskThree() {
+        Box<Apple> boxWithApple = new Box<>(new Apple(), new Apple(), new Apple()); //picking apples in box
+        Box<Orange> boxWithOranges = new Box<>(new Orange(), new Orange()); //picking apples in box
+        Box<Orange> anotherBoxWithOranges = new Box<>();
+        System.out.println("A box of apples weighs " + boxWithApple.getWeight()); //weight box with apples
+        System.out.println("A box of oranges weight " + boxWithOranges.getWeight()); //weight box with apples
+        System.out.println(boxWithApple.compare(boxWithOranges));
+        boxWithOranges.replaceFruitsToAnotherBox(anotherBoxWithOranges);
+        System.out.println(boxWithOranges.getBox());
+        System.out.println(anotherBoxWithOranges.getBox());
+    }
+
+    private static void swapTwoNumbersInArray(int[] array, int firstNumberPos, int secondNumberPos) throws WrongPositionException {
+        if (firstNumberPos < 0 || firstNumberPos > array.length ||
+                secondNumberPos < 0 || secondNumberPos > array.length || firstNumberPos == secondNumberPos) {
+            throw new WrongPositionException("Неправильно указаны позиции элементов для замены");
+        }
+        array[firstNumberPos] ^= array[secondNumberPos];
+        array[secondNumberPos] ^= array[firstNumberPos];
+        array[firstNumberPos] ^= array[secondNumberPos];
+    }
+
+    private static void swapTwoElementsInArray(Object[] array, int firstNumPos, int secondNumPos) throws WrongPositionException {
+        if (firstNumPos < 0 || firstNumPos > array.length ||
+                secondNumPos < 0 || secondNumPos > array.length || firstNumPos == secondNumPos) {
+            throw new WrongPositionException("Неправильно указаны позиции элементов для замены");
+        }
+        Object temp = array[firstNumPos];
+        array[firstNumPos] = array[secondNumPos];
+        array[secondNumPos] = temp;
+    }
+
+    private static <T> ArrayList arrayToArrayList(T[] array) {
+        return new ArrayList<>(Arrays.asList(array));
     }
 }
+
