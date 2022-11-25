@@ -1,2 +1,13 @@
-package lesson3.homework;public class Apple {
+package lesson3.homework;
+
+public class Apple extends Fruit {
+
+    Apple() {
+        super(1.0f);
+    }
+
+    @Override
+    public String toString(){
+        return "яблоки";
+    }
 }
